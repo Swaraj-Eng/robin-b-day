@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday, Robin ✨</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        :root {
+            --bg-premium: #fffbfb;
+            --primary-gold: #d4a373;
+            --romantic-rose: #fae1dd;
+            --deep-wine: #4a1525;
+            --soft-text: #5c4d51;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-premium);
+            color: var(--deep-wine);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        /* Intro Page */
+
+        #intro-gate {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #2d0d17 0%, #0f0306 100%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1.4s cubic-bezier(0.77, 0, 0.175, 1);
+            color: #fceade;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #intro-gate h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem;
+            font-weight: 400;
+            font-style: italic;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInBlur 2.5s forwards 0.5s;
+        }
+
+        .enter-btn {
+            background: transparent;
+            border: 1px solid rgba(252, 234, 222, 0.4);
+            color: #fceade;
+            padding: 14px 36px;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 40px;
+            transition: all 0.5s ease;
+            opacity: 0;
+            animation: fadeInBlur 2s forwards 1.5s;
+        }
+
+        .enter-btn:active {
+            background: #fceade;
+            color: #0f0306;
+            box-shadow: 0 0 20px rgba(252, 234, 222, 0.3);
+        }
+
+        /* Music Controls */
+
+        .music-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 90;
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(74, 21, 37, 0.06);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .music-toggle.playing {
+            animation: pulse 2s infinite;
+        }
+
+        /* Main Container */
+
+        .main-wrapper {
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 80px 20px 100px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease 0.8s;
+            display: flex;
+            flex-direction: column;
+            gap: 90px;
+        }
+
+        .main-wrapper.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Letter Section */
+
+        .editorial-letter {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 40px 28px;
+            box-shadow: 0 20px 50px rgba(74, 21, 37, 0.03);
+            border: 1px solid rgba(214, 163, 115, 0.12);
+            text-align: left;
+            position: relative;
+        }
+
+        .editorial-letter::before {
+            content: "✦";
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--primary-gold);
+            font-size: 1.2rem;
+        }
+
+        .letter-salutation {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-style: italic;
+            margin-bottom: 25px;
+            color: var(--deep-wine);
+        }
+
+        .letter-paragraph {
+            font-size: 1.02rem;
+            color: var(--soft-text);
+            margin-bottom: 20px;
+            text-align: justify;
+            font-weight: 300;
+        }
+
+        .letter-closing {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-style: italic;
+            text-align: right;
+            margin-top: 35px;
+            color: var(--deep-wine);
+            line-height: 1.3;
+        }
+
+        /* Flip Cards */
+
+        .section-title {
+            text-align: center;
+            font-size: 2.3rem;
+            margin-bottom: 6px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--soft-text);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 35px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            height: 165px;
+            perspective: 1000px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 18px;
+            box-shadow: 0 10px 25px rgba(74, 21, 37, 0.02);
+        }
+
+        .card-front {
+            background: white;
+            border: 1px solid rgba(214, 163, 115, 0.1);
+        }
+
+        .card-front .icon {
+            font-size: 2.3rem;
+            margin-bottom: 12px;
+        }
+
+        .card-front span {
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            color: var(--soft-text);
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, var(--deep-wine) 0%, #2b0b14 100%);
+            color: #fff8f8;
+            transform: rotateY(180deg);
+            font-size: 0.95rem;
+            font-weight: 300;
+            line-height: 1.5;
+            padding: 15px;
+        }
+
+        /* Seven Reasons */
+
+        .reasons-timeline {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            padding-left: 10px;
+        }
+
+        .reasons-timeline::before {
+            content: '';
+            position: absolute;
+            left: 35px;
+            top: 30px;
+            bottom: 30px;
+            width: 1px;
+            border-left: 1px dashed rgba(214, 163, 115, 0.4);
+            z-index: 1;
+        }
+
+        .reason-node {
+            background: white;
+            padding: 24px 22px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border: 1px solid rgba(214, 163, 115, 0.08);
+            box-shadow: 0 15px 35px rgba(74, 21, 37, 0.02);
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s cubic-bezier(0.215, 0.610, 0.355, 1);
+        }
+
+        .reason-node.reveal {
+            opacity: 1;
+            transform: translateY(0);
+            border-color: rgba(214, 163, 115, 0.25);
+            box-shadow: 0 15px 40px rgba(214, 163, 115, 0.08);
+        }
+
+        .reason-emoji {
+            font-size: 1.6rem;
+            background: linear-gradient(135deg, #fff5f5 0%, var(--romantic-rose) 100%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .reason-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .reason-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--primary-gold);
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .reason-text {
+            font-size: 0.96rem;
+            color: var(--soft-text);
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        /* Birthday Cake */
+
+        .cake-container {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 40px 20px;
+            text-align: center;
+            border: 1px solid rgba(214, 163, 115, 0.1);
+            box-shadow: 0 20px 50px rgba(74, 21, 37, 0.02);
+        }
+
+        .cake-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 30px auto;
+            font-size: 5.5rem;
+            cursor: pointer;
+        }
+
+        .flame {
+            position: absolute;
+            top: -22px;
+            left: 52%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 24px;
+            background: linear-gradient(to bottom, #ffedbc, #ffaa00, #ff3300);
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.8);
+            animation: flicker 0.6s infinite alternate;
+            transition: opacity 0.4s ease;
+        }
+
+        .cake-wrapper.blown .flame {
+            opacity: 0;
+        }
+
+        .blow-btn {
+            background: var(--deep-wine);
+            color: #fffbfb;
+            border: none;
+            padding: 14px 30px;
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 8px 25px rgba(74, 21, 37, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .blow-btn:active {
+            transform: scale(0.96);
+        }
+
+        #wishes-msg {
+            margin-top: 25px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-style: italic;
+            color: var(--primary-gold);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #wishes-msg.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Animations */
+
+        @keyframes fadeInBlur {
+            0% {
+                opacity: 0;
+                filter: blur(5px);
+            }
+            100% {
+                opacity: 1;
+                filter: blur(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.08);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes flicker {
+            0% {
+                transform: translateX(-50%) scale(1) rotate(-1deg);
+            }
+            100% {
+                transform: translateX(-50%) scale(1.05) rotate(1deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Intro Page -->
+
+    <div id="intro-gate">
+        <h1>To the one who makes life more fun...</h1>
+        <button class="enter-btn" onclick="startExperience()">
+            Open Your Surprise
+        </button>
+    </div>
+
+    <!-- Music Controls -->
+
+    <button class="music-toggle" id="audio-btn" onclick="toggleAudio()">🎵</button>
+
+    <audio id="bg-audio" loop src="music/background.mp3"></audio>
+    <audio id="birthday-audio" src="music/birthday.mp3"></audio>
+
+    <div class="main-wrapper" id="content-area">
+
+        <!-- Birthday Letter -->
+
+        <article class="editorial-letter">
+
+            <h2 class="letter-salutation">
+                To My Dear Bestestest Friend, ❤️
+            </h2>
+
+            <p class="letter-paragraph">
+                Today is your special day, and I just want to remind you how lucky I am to have a friend like you in my life.
+            </p>
+
+            <p class="letter-paragraph">
+                From our random conversations to our silly jokes and endless laughs, every moment shared with you becomes a beautiful memory. Thank you for always being there, understanding me, and being the amazing person you are.
+            </p>
+
+            <p class="letter-paragraph">
+                I hope this new year of your life brings you endless happiness, success, and everything you have ever wished for. Never change, keep smiling, and always stay the crazy person you are!
+            </p>
+
+            <div class="letter-closing">
+                With lots of love and friendship,<br>
+
+                <span style="font-size: 1.8rem; font-weight: 600; color: var(--primary-gold);">
+                    Your Bestu ❤️
+                </span>
+            </div>
+
+        </article>
+
+        <!-- Our Little Story -->
+
+        <section>
+
+            <h2 class="section-title">Our Little Story</h2>
+
+            <p class="section-subtitle">
+                Tap the cards to reveal ✨
+            </p>
+
+            <div class="grid-container">
+
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+
+                        <div class="card-front">
+                            <div class="icon">🎂</div>
+                            <span>The Day</span>
+                        </div>
+
+                        <div class="card-back">
+                            <p>
+                                The day you were born, the world got one more amazing person! ✨
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+
+                        <div class="card-front">
+                            <div class="icon">🌸</div>
+                            <span>Your Smile</span>
+                        </div>
+
+                        <div class="card-back">
+                            <p>
+                                Your smile can turn even a boring day into a happy one. 😊
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+
+                        <div class="card-front">
+                            <div class="icon">⭐</div>
+                            <span>Every Day</span>
+                        </div>
+
+                        <div class="card-back">
+                            <p>
+                                Every moment with you becomes a memory worth remembering. 💛
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="flipCard(this)">
+                    <div class="flip-card-inner">
+
+                        <div class="card-front">
+                            <div class="icon">🧸</div>
+                            <span>Best Friend</span>
+                        </div>
+
+                        <div class="card-back">
+                            <p>
+                                Life is always more fun with a crazy best friend like you! 🤗
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Seven Reasons -->
+
+        <section>
+
+            <h2 class="section-title">7 Reasons</h2>
+
+            <p class="section-subtitle">
+                Why You Are An Amazing Friend ✨
+            </p>
+
+            <div class="reasons-timeline">
+
+                <div class="reason-node">
+                    <div class="reason-emoji">🌸</div>
+                    <div class="reason-content">
+                        <span class="reason-label">Reason #01 • The Care</span>
+                        <p class="reason-text">
+                            The way you care for your friends makes you truly special.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-node">
+                    <div class="reason-emoji">✨</div>
+                    <div class="reason-content">
+                        <span class="reason-label">Reason #02 • Your Personality</span>
+                        <p class="reason-text">
+                            Your unique personality and kind heart make you different from everyone else.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-node">
+                    <div class="reason-emoji">🧘‍♀️</div>
+                    <div class="reason-content">
+                        <span class="reason-label">Reason #03 • My Good Mood</span>
+                        <p class="reason-text">
+                            No matter how boring the day is, talking to you always makes it better.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-node">
+                    <div class="reason-emoji">🤭</div>
+                    <div class="reason-content">
+                        <span class="reason-label">Reason #04 • Your Expressions</span>
+                        <p class="reason-text">
+                            Your funny reactions, random laughs, and silly expressions never fail to make me laugh.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-node">
+                    <div class="reason-emoji">🤝</div>
+                    <div class="reason-content">
+                        <span class="reason-label">Reason #05 • The Support</span>
+                        <p class="reason-text">
+                            Thanks for always being there whenever a friend needs you. Your support means a lot.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-node">
+                    <div class="reason-emoji">🎵</div>
+                    <div class="reason-content">
+                        <span class="reason-label">Reason #06 • Your Laugh</span>
+                        <p class="reason-text">
+                            Your laughter makes every moment more fun and memorable.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reason-node">
+                    <div class="reason-emoji">🏡</div>
+                    <div class="reason-content">
+                        <span class="reason-label">Reason #07 • Our Friendship</span>
+                        <p class="reason-text">
+                            Some friendships are truly special, and I am glad we have one of them.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Birthday Cake -->
+
+        <section class="cake-container">
+
+            <h2 class="section-title">Make A Wish</h2>
+
+            <p class="section-subtitle">
+                Blow the candle, Robin 🎂
+            </p>
+
+            <div class="cake-wrapper" id="cake-vessel" onclick="blowCandle()">
+                <div class="flame" id="candle-flame"></div>
+                🎂
+            </div>
+
+            <button class="blow-btn" id="blow-action" onclick="blowCandle()">
+                Touch to Blow 💨
+            </button>
+
+            <h3 id="wishes-msg">
+                Happy Birthday, Robin! 🎉
+            </h3>
+
+        </section>
+
+    </div>
+
+    <!-- JavaScript -->
+
+    <script>
+
+        const romanticAudio = document.getElementById('bg-audio');
+        const birthdayAudio = document.getElementById('birthday-audio');
+        const audioBtn = document.getElementById('audio-btn');
+
+        let isMutedGlobal = false;
+
+        // Start Website
+
+        function startExperience() {
+
+            document.getElementById('intro-gate').style.transform = 'translateY(-100%)';
+
+            document.getElementById('content-area').classList.add('show');
+
+            romanticAudio.play().then(() => {
+
+                audioBtn.classList.add('playing');
+
+            }).catch(err => {
+
+                console.log("Browser blocked autoplay, waiting for interaction.");
+
+            });
+
+        }
+
+        // Music Play / Pause
+
+        function toggleAudio() {
+
+            let currentAudio =
+                document.getElementById('cake-vessel').classList.contains('blown')
+                && !birthdayAudio.ended
+                ? birthdayAudio
+                : romanticAudio;
+
+            if (currentAudio.paused) {
+
+                currentAudio.play();
+
+                audioBtn.classList.add('playing');
+
+                isMutedGlobal = false;
+
+            } else {
+
+                currentAudio.pause();
+
+                audioBtn.classList.remove('playing');
+
+                isMutedGlobal = true;
+
+            }
+
+        }
+
+        // Flip Cards
+
+        function flipCard(cardElement) {
+
+            cardElement.classList.toggle('flipped');
+
+        }
+
+        // Blow Birthday Candle
+
+        function blowCandle() {
+
+            const cake = document.getElementById('cake-vessel');
+
+            const message = document.getElementById('wishes-msg');
+
+            const button = document.getElementById('blow-action');
+
+            if (!cake.classList.contains('blown')) {
+
+                cake.classList.add('blown');
+
+                button.style.display = 'none';
+
+                message.classList.add('show');
+
+                romanticAudio.pause();
+
+                if (!isMutedGlobal) {
+
+                    birthdayAudio.play().then(() => {
+
+                        audioBtn.classList.add('playing');
+
+                    }).catch(err => console.log(err));
+
+                }
+
+                birthdayAudio.onended = function () {
+
+                    if (!isMutedGlobal) {
+
+                        romanticAudio.play();
+
+                        audioBtn.classList.add('playing');
+
+                    }
+
+                };
+
+                // Confetti Animation
+
+                var duration = 4 * 1000;
+
+                var end = Date.now() + duration;
+
+                (function frame() {
+
+                    confetti({
+                        particleCount: 3,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0, y: 0.8 }
+                    });
+
+                    confetti({
+                        particleCount: 3,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1, y: 0.8 }
+                    });
+
+                    if (Date.now() < end) {
+
+                        requestAnimationFrame(frame);
+
+                    }
+
+                }());
+
+                confetti({
+                    particleCount: 150,
+                    spread: 80,
+                    origin: { y: 0.6 }
+                });
+
+            }
+
+        }
+
+        // Scroll Reveal
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+
+            entries.forEach(entry => {
+
+                if (entry.isIntersecting) {
+
+                    entry.target.classList.add('reveal');
+
+                }
+
+            });
+
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        document.querySelectorAll('.reason-node').forEach(node => {
+
+            scrollObserver.observe(node);
+
+        });
+
+    </script>
+
+</body>
+</html>
